@@ -1,0 +1,36 @@
+<h1><%= @product.item_name %></h1>
+
+<div>
+  <%= button_to "Transaction", product_transactions_path(@product), method: :get, class: "btn btn-outline-primary" %>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @related_products.sort_by { |product| [product.brand, product.description, product.created_at] }.each do |product| %>
+        <tr>
+          <td><%= product.brand %></td>
+          <td><%= product.stock %></td>
+          <td><%= product.price %></td>
+          <td><%= product.description %></td>
+          <td><%= product.created_at.in_time_zone('Islamabad').strftime("%B %e, %Y %I:%M %p") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= paginate @related_products %>
+</div>
+
+
+<%# <%= button_to "Edit", edit_user_product_path( params: { id: @product.id} ), method: :get %>
+<%# <%= button_to "Destroy", user_product_path( params: { id: @product.id} ), method: :delete,
+    data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger"%>

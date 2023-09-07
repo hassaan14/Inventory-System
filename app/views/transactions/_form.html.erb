@@ -1,0 +1,35 @@
+<%= form_with(model: transaction, url: product_transactions_path(@product), local: true) do |form| %>  
+
+<h2><%= @product.item_name %> Transactions: </h2>
+
+  <div class="form-group">
+    <%= form.label :brand %>
+    <%= form.select :brand, options_for_select(@product_names_brands), class: "form-select" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :transaction_type %>
+    <%= form.select :transaction_type, [['Buy', 'buy'], ['Sell', 'sell']], class: "form-select" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.select :description, options_for_select(@product_names_description), class: "form-select" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :stock %>
+    <%= form.number_field :stock, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :price %>
+    <%= form.number_field :price, class: "form-control" %>
+  </div>
+
+<%= form.hidden_field :product_id, value: @product.id %>
+  
+  <div class="form-group">
+    <%= form.submit class: "btn btn-success" %>
+  </div>
+<% end %>

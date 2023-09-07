@@ -1,0 +1,55 @@
+<h1><%= @transaction.transaction_type %></h1>
+<h2><%= @product.item_name %></h2>
+
+<% if flash[:notice] %>
+<div class="alert alert-info">
+    <%= flash[:notice] %>
+</div>
+<% end %>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Transaction Details
+            </div>
+            <div class="card-body">
+                <p class="card-text"><strong>Brand:</strong> <%= @transaction.brand %></p>
+                <p class="card-text"><strong>Transaction Type:</strong> <%= @transaction.transaction_type %></p>
+                <p class="card-text"><strong>Price:</strong> <%= number_to_currency(@transaction.price, unit: 'PKR ') %></p>
+                <p class="card-text"><strong>Stock:</strong> <%= @transaction.stock %></p>
+                <p class="card-text"><strong>Date:</strong> <%= @transaction.created_at.in_time_zone('Islamabad').strftime("%B %e, %Y %I:%M %p") %></p>
+                
+                <% if @transaction.transaction_type == 'sell' %>
+                <div class="card">
+                    <div class="card-body">
+                        <% if @profit.present? %>
+                        <p class="card-text"><strong>Profit:</strong> <%= number_to_currency(@profit, unit: 'PKR') %></p>
+                        <% else %>
+                        <p class="card-text">No profit calculated.</p>
+                        <% end %>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <%= link_to "Back to Transactions", product_transactions_path(@product), class: "btn btn-outline-dark" %>
+            </div>
+            <%# <div class="col-md-6">
+                <%= link_to "Edit Transaction", edit_product_transaction_path(@product, @transaction), class: "btn btn-primary btn-block" %>
+            <%# </div> %>
+        </div>
+
+        <%# <div class="row mt-2">
+            <div class="col-md-6">
+                <%= button_to "Destroy", product_transaction_path(@product, @transaction), method: :delete,
+                data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger btn-block" %>
+            <%# </div>
+        </div> %>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col">
+    <h2><%= @product.item_name %> Transactions:</h2>
+  </div>
+  <div class="col">
+    <%= link_to "Back to Products", products_path, class: "btn btn-outline-dark" %>
+    <%= link_to "Add New Transaction", new_product_transaction_path(params: { product_id: @product.id }), method: :get, class: "btn btn-outline-primary" %>
+  </div>
+</div><br>
+
+<%= form_tag product_transactions_path(@product), method: :get, class: "form-inline" do %>
+  <div class="form-group mb-2">
+    <%= label_tag "start_date", "Start Date:" %>
+    <%= text_field_tag "start_date", params[:start_date], class: "form-control-sm date-picker" %>
+    <%= label_tag "end_date", "End Date:" %>
+    <%= text_field_tag "end_date", params[:end_date], class: "form-control-sm date-picker" %>
+      <%= submit_tag "Search", class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<% if @transactions.any? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Transaction Type</th>
+        <th>Price</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="4"><strong>Latest Buy Transactions:</strong></td>
+      </tr>
+      <% buy_total_price = 0 %>
+      <% @transactions.where(transaction_type: 'buy').order(created_at: :desc).each do |transaction| %>
+        <tr>
+          <td><%= transaction.transaction_type %></td>
+          <td><%= transaction.price %></td>
+          <td><%= transaction.created_at.in_time_zone('Islamabad').strftime("%B %e, %Y %I:%M %p") %></td>
+          <td><%= link_to "View", product_transaction_path(@product, transaction), class: "btn btn-primary btn-sm" %></td>
+        </tr>
+        <% buy_total_price += transaction.price %>
+      <% end %>
+      <tr>
+        <td colspan="4"><strong>Total Buy Price: </strong><%= number_to_currency(buy_total_price, unit: "PKR ", format: "%n %u") %></td> <!-- Adjust colspan to 4 for 4 columns -->
+      </tr>
+          
+      <tr>
+        <td colspan="4"><strong>Latest Sell Transactions:</strong></td>
+      </tr>
+      <% sell_total_price = 0 %>
+      <% @transactions.where(transaction_type: 'sell').order(created_at: :desc).each do |transaction| %>
+        <tr>
+          <td><%= transaction.transaction_type %></td>
+          <td><%= transaction.price %></td>
+          <td><%= transaction.created_at.in_time_zone('Islamabad').strftime("%B %e, %Y %I:%M %p") %></td>
+          <td><%= link_to "View", product_transaction_path(@product, transaction), class: "btn btn-primary btn-sm" %></td>
+        </tr>
+        <% sell_total_price += transaction.price %>
+      <% end %>
+      <tr>
+        <td colspan="4"><strong>Total Sell Price: </strong><%= number_to_currency(sell_total_price, unit: "PKR ", format: "%n %u") %></td> <!-- Adjust colspan to 4 for 4 columns -->
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-center mt-3">
+    <%= paginate @transactions %>
+  </div>
+<% else %>
+  <p>No transactions found.</p>
+<% end %>
