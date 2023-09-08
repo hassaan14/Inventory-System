@@ -14,14 +14,12 @@ class TransactionsController < ApplicationController
   def new
     @transaction = Transaction.new
     @product_names = @user.products.pluck(:item_name).uniq
-    @product_names_brands = @user.products.where(item_name: @product.item_name).pluck(:brand).uniq
     @product_names_description = @user.products.where(item_name: @product.item_name).pluck(:description).uniq
   end
 
   def create
     transaction_type = params[:transaction][:transaction_type]
     @product_names = @user.products.pluck(:item_name).uniq
-    @product_names_brands = Product.where(item_name: @product.item_name).pluck(:brand).uniq
     @product_names_description = Product.where(item_name: @product.item_name).pluck(:description).uniq
     stock = params[:transaction][:stock].to_i
     price = params[:transaction][:price].to_f
@@ -81,7 +79,6 @@ class TransactionsController < ApplicationController
 def edit
   @transaction = Transaction.find(params[:id])
   @product_names = @transaction.product.user.products.pluck(:item_name).uniq
-  @product_names_brands = @product.class.where(item_name: @transaction.product.item_name).pluck(:brand).uniq
   @product_names_description = @product.class.where(item_name: @transaction.product.item_name).pluck(:description).uniq
 end
 

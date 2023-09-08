@@ -3,7 +3,7 @@ before_action :find_user
 
 def index 
   @q = Product.ransack(params[:q])
-  @products = @q.result(distinct: true).page(params[:page])
+  @products = @q.result(distinct: true).page(params[:page]).per(10)
 
   if @q.result.empty?
     flash.now[:notice] = "Product does not Exist."

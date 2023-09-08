@@ -35,15 +35,11 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="row mt-2">
-            <div class="col-md-6">
-                <%= link_to "Back to Transactions", product_transactions_path(@product), class: "btn btn-outline-dark" %>
-            </div>
-            <%# <div class="col-md-6">
-                <%= link_to "Edit Transaction", edit_product_transaction_path(@product, @transaction), class: "btn btn-primary btn-block" %>
-            <%# </div> %>
-        </div>
+    <div class="col">
+        <%= link_to "Edit", edit_product_transaction_path(@product, @transaction), class: "btn btn-outline-primary" %>
+        <%= link_to "Back to Transactions", product_transactions_path(@product), class: "btn btn-outline-dark" %>
+    </div>
+</div>
 
         <%# <div class="row mt-2">
             <div class="col-md-6">
@@ -51,5 +47,3 @@
                 data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger btn-block" %>
             <%# </div>
         </div> %>
-    </div>
-</div>
